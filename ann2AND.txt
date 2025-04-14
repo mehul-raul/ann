@@ -1,0 +1,63 @@
+# Function to simulate a McCulloch-Pitts neuron for ANDNOT (A AND NOT B)
+def mcp_andnot(a, b):
+    # Assign weights to inputs
+    w_a = 1    # weight for input A
+    w_b = -1   # weight for input B (negative because we want NOT B)
+
+    # Set the threshold value
+    theta = 1  # neuron fires only if net input >= threshold
+
+    # Calculate weighted sum of inputs
+    weighted_sum = w_a * a + w_b * b
+
+    # Apply activation rule
+    # If weighted sum >= threshold, neuron activates (returns 1), else 0
+    return 1 if weighted_sum >= theta else 0
+
+# Print the truth table for ANDNOT logic gate
+print("A B | A AND NOT B")
+for a in [0, 1]:       # all values of A: 0 and 1
+    for b in [0, 1]:   # all values of B: 0 and 1
+        result = mcp_andnot(a, b)
+        print(f"{a} {b} |     {result}")
+
+
+ How It Works:
+The McCulloch-Pitts neuron is a simple model of a neuron which fires (outputs 1) only if the weighted sum of its inputs is greater than or equal to a threshold.
+
+For A AND NOT B, the neuron should:
+
+Activate only when A = 1 and B = 0
+
+We assign:
+
+Weight of A = +1
+
+Weight of B = -1 (to implement NOT B)
+
+Threshold = 1
+
+So the net input to the neuron is: net = A × 1 + B × (-1)
+
+If this net ≥ 1 → output = 1
+
+Else → output = 0
+
+🎓 Viva Questions and Answers
+1. What is a McCulloch-Pitts neuron?
+Answer: It is the earliest model of an artificial neuron. It takes binary inputs, applies weights, computes the weighted sum, compares it with a threshold, and outputs either 1 (fire) or 0 (no fire).
+
+2. Why is the weight of B negative in the ANDNOT function?
+Answer: Because we want to implement NOT B, and multiplying B by a negative weight inverts its effect. When B is 1, it reduces the total sum, preventing activation.
+
+3. Why is the threshold set to 1?
+Answer: The threshold determines when the neuron fires. We need the neuron to fire only when A = 1 and B = 0, and the weighted sum is exactly 1 in that case.
+
+4. Can the McCulloch-Pitts model represent all logic gates?
+Answer: No, it can represent only linearly separable functions like AND, OR, NAND, ANDNOT. It cannot represent non-linearly separable functions like XOR.
+
+5. What is the limitation of the McCulloch-Pitts model?
+Answer: It only works with binary inputs and outputs, cannot learn, and cannot solve problems like XOR which are not linearly separable.
+
+6. What does “linearly separable” mean?
+Answer: A function is linearly separable if a straight line (in 2D space) can separate the output classes (1s and 0s). Functions like AND and OR are linearly separable; XOR is not.

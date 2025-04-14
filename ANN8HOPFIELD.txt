@@ -1,0 +1,31 @@
+import numpy as np
+
+# 4 bipolar patterns (5 bits each)
+patterns = np.array([
+    [1, -1, 1, -1, 1],
+    [-1, 1, -1, 1, -1],
+    [1, 1, -1, -1, 1],
+    [-1, -1, 1, 1, -1]
+])
+
+# Weight matrix using Hebbian learning
+n = patterns.shape[1]
+W = np.zeros((n, n))
+for p in patterns:
+    W += np.outer(p, p)
+np.fill_diagonal(W, 0)  # No self-connections
+
+# Recall function
+def recall(x, steps=5):
+    for _ in range(steps):
+        x = np.sign(np.dot(W, x))
+    return x
+
+# Test recall of a noisy pattern
+test = np.array([1, -1, 1, -1, -1])
+output = recall(test)
+print(f"Noisy input:  {test}")
+print(f"Recalled:     {output}")
+
+# Q: What is a Hopfield network?
+# A: A recurrent network that stores patterns as energy minima and recalls them from noisy inputs.

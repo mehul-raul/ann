@@ -1,0 +1,124 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.colors import ListedColormap
+
+# ---------------------------- INPUT DATA ---------------------------- #
+# Simple 2D dataset with 2 classes
+# Class 0: Points around (1,1), (1,0)
+# Class 1: Points around (3,3), (4,3)
+
+X = np.array([
+    [1, 1], [1, 0],     # Class 0
+    [3, 3], [4, 3]      # Class 1
+])
+
+# Labels: 0 → Class 0, 1 → Class 1
+y = np.array([0, 0, 1, 1])
+
+# ---------------------------- PERCEPTRON TRAINING ---------------------------- #
+# Initialize perceptron parameters
+weights = np.zeros(X.shape[1])  # 2 weights for 2D input
+bias = 0                        # Threshold
+learning_rate = 0.1
+epochs = 10                     # Number of passes over the dataset
+
+# Train using Perceptron Learning Rule
+for epoch in range(epochs):
+    for i in range(len(X)):
+        # Weighted sum
+        z = np.dot(X[i], weights) + bias
+        # Activation function (step function)
+        prediction = 1 if z >= 0 else 0
+        # Calculate error
+        error = y[i] - prediction
+        # Update weights and bias if error is non-zero
+        weights += learning_rate * error * X[i]
+        bias += learning_rate * error
+
+# Print learned parameters
+print("Trained Weights:", weights)
+print("Trained Bias:", bias)
+
+# ---------------------------- VISUALIZATION ---------------------------- #
+# Function to plot decision boundary and regions
+def plot_decision_regions(X, y, weights, bias):
+    # Define background colors for classes
+    cmap_light = ListedColormap(['#FFAAAA', '#AAFFAA'])  # Red, Green
+    cmap_bold = ['red', 'green']
+
+    # Create mesh grid for plotting
+    x_min, x_max = X[:, 0].min() - 1, X[:, 0].max() + 1
+    y_min, y_max = X[:, 1].min() - 1, X[:, 1].max() + 1
+    xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.1),
+                         np.arange(y_min, y_max, 0.1))
+    
+    # Apply perceptron to each point in the grid
+    Z = np.dot(np.c_[xx.ravel(), yy.ravel()], weights) + bias
+    Z = (Z >= 0).astype(int).reshape(xx.shape)
+
+    # Plot decision regions
+    plt.figure(figsize=(8, 6))
+    plt.contourf(xx, yy, Z, cmap=cmap_light)
+
+    # Plot training points
+    for i, label in enumerate(np.unique(y)):
+        plt.scatter(X[y == label, 0], X[y == label, 1],
+                    c=cmap_bold[i], label=f"Class {label}",
+                    edgecolor='black', s=100)
+
+    plt.title("Perceptron Decision Boundary")
+    plt.xlabel("Feature 1")
+    plt.ylabel("Feature 2")
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
+# Call the function to plot
+plot_decision_regions(X, y, weights, bias)
+
+# ---------------------------- EXPLANATION ---------------------------- #
+
+# 💡 Working:
+# - The perceptron is a single-layer binary classifier.
+# - It updates its weights based on the error between prediction and actual value.
+# - After training, it learns a linear decision boundary separating two classes.
+
+# 📈 Visualization:
+# - Red and green regions show predicted class 0 and class 1, respectively.
+# - The bold black-outlined dots are the actual training points.
+# - The decision boundary is the line where the perceptron output changes from 0 to 1.
+
+# 🎯 Output:
+# Trained Weights and Bias will vary depending on convergence but should correctly separate the two classes.
+
+# ---------------------------- VIVA QUESTIONS ---------------------------- #
+
+# Q1: What is the perceptron learning rule?
+# A1: It updates weights using the formula:
+#     w = w + learning_rate * (target - prediction) * x
+
+# Q2: Why does the perceptron work on this dataset?
+# A2: Because the classes are linearly separable (can be split with a straight line).
+
+# Q3: What activation function is used here?
+# A3: Step function — output is 1 if weighted sum ≥ 0, else 0.
+
+# Q4: What is the role of the bias?
+# A4: Bias shifts the decision boundary left/right, enabling the model to classify data not centered at origin.
+
+# Q5: Can perceptron solve XOR problem?
+# A5: No, because XOR is not linearly separable.
+
+# Q6: What are decision regions?
+# A6: These are the areas in input space where the perceptron predicts the same class.
+
+# Q7: What happens if we increase the number of epochs?
+# A7: It allows the model more time to adjust weights, which can help with convergence, unless the data is not linearly separable.
+
+# Q8: What is linear separability?
+# A8: A dataset is linearly separable if a straight line (or hyperplane) can separate the classes.
+
+# Q9: How do we know if training is successful?
+# A9: If the perceptron classifies all training samples correctly after a few epochs, the training is successful.
+
+# ✅ Let me know if you'd like to extend this to non-linearly separable problems or to a multi-class version!

@@ -1,0 +1,33 @@
+import numpy as np
+
+# -------------------- TRAINING DATA --------------------
+# Two pairs of binary vectors (bipolar representation: 1, -1)
+X = np.array([[1, -1, 1], [-1, 1, -1]])  # Input vectors
+Y = np.array([[1, -1], [-1, 1]])        # Associated output vectors
+
+# -------------------- TRAINING PHASE --------------------
+# Weight matrix (BAM rule: W = X^T * Y)
+W = np.dot(X.T, Y)
+
+# -------------------- TESTING PHASE --------------------
+def recall_bam(x):
+    y = np.sign(np.dot(x, W))     # Forward
+    x_recall = np.sign(np.dot(y, W.T))  # Backward
+    return x_recall, y
+
+# Test recall
+for i in range(len(X)):
+    xr, yr = recall_bam(X[i])
+    print(f"\nInput: {X[i]}")
+    print(f"Recalled Y: {yr}")
+    print(f"Recalled X: {xr}")
+
+# -------------------- VIVA QUESTIONS --------------------
+# Q1: What is BAM?
+# A1: BAM is a hetero-associative memory that stores pairs of patterns and allows bidirectional recall.
+
+# Q2: What is bipolar representation?
+# A2: A binary format using -1 and 1 instead of 0 and 1.
+
+# Q3: What is the weight update rule for BAM?
+# A3: W = X^T * Y, where X and Y are bipolar vectors.

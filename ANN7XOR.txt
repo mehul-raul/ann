@@ -1,0 +1,41 @@
+import numpy as np
+
+# XOR input and output
+X = np.array([[0,0],[0,1],[1,0],[1,1]])
+y = np.array([[0],[1],[1],[0]])
+
+# Initialize weights and bias
+np.random.seed(1)
+input_hidden = np.random.randn(2, 2)
+hidden_output = np.random.randn(2, 1)
+bias_hidden = np.zeros((1, 2))
+bias_output = np.zeros((1, 1))
+
+# Sigmoid and its derivative
+def sigmoid(x): return 1/(1+np.exp(-x))
+def sigmoid_deriv(x): return x * (1 - x)
+
+# Training loop
+lr = 0.5
+for epoch in range(10000):
+    # Forward pass
+    hidden_layer = sigmoid(np.dot(X, input_hidden) + bias_hidden)
+    output_layer = sigmoid(np.dot(hidden_layer, hidden_output) + bias_output)
+
+    # Backpropagation
+    error = y - output_layer
+    d_output = error * sigmoid_deriv(output_layer)
+    d_hidden = np.dot(d_output, hidden_output.T) * sigmoid_deriv(hidden_layer)
+
+    # Weight updates
+    hidden_output += np.dot(hidden_layer.T, d_output) * lr
+    input_hidden += np.dot(X.T, d_hidden) * lr
+    bias_output += np.sum(d_output, axis=0, keepdims=True) * lr
+    bias_hidden += np.sum(d_hidden, axis=0, keepdims=True) * lr
+
+# Final Output
+print("Predictions after training:")
+print(output_layer.round())
+
+# Q: What is backpropagation?
+# A: A method to update weights by propagating errors backward from output to input.
