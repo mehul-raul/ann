@@ -1,22 +1,66 @@
 import tensorflow as tf
-from sklearn.datasets import make_classification
+import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
-# Generate binary classification dataset
+# -------------------- LOAD OR CREATE YOUR DATA --------------------
+# Replace this with your own dataset (X: features, y: labels)
+# Example (temporary demo data for binary classification):
+from sklearn.datasets import make_classification
 X, y = make_classification(n_samples=1000, n_features=10, n_classes=2, random_state=1)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
 
-# Build logistic regression model
+# Split into training and testing sets (70% train, 30% test)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+# -------------------- MODEL BUILDING --------------------
+# Logistic regression using 1 Dense unit with sigmoid activation
 model = tf.keras.Sequential([
-    tf.keras.layers.Dense(1, activation='sigmoid', input_shape=(10,))
+    tf.keras.layers.Dense(1, activation='sigmoid', input_shape=(X.shape[1],))
 ])
+
+# Compile the model
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
-# Train and evaluate
-model.fit(X_train, y_train, epochs=10, batch_size=32, verbose=0)
-loss, acc = model.evaluate(X_test, y_test)
-print(f"Accuracy: {acc:.2f}")
+# -------------------- TRAINING --------------------
+model.fit(X_train, y_train, epochs=10, batch_size=32, verbose=1)
 
-# Q: Why sigmoid for logistic regression?
-# A: It outputs values between 0 and 1, representing probabilities.
+# -------------------- EVALUATION --------------------
+loss, acc = model.evaluate(X_test, y_test)
+print(f"\nTest Accuracy: {acc:.2f}")
+
+# -------------------- PREDICTION EXAMPLE --------------------
+# Predicting on one test example
+sample = X_test[0].reshape(1, -1)
+pred = model.predict(sample)
+print(f"\nSample prediction (probability): {pred[0][0]:.4f}")
+print(f"Predicted class: {1 if pred[0][0] >= 0.5 else 0}")
+
+
+
+"""work - A logistic regression model is built using TensorFlow's Keras API.
+- It has a single neuron with a sigmoid activation function.
+- The sigmoid function outputs values between 0 and 1, which are interpreted as probabilities of class 1.
+- 'binary_crossentropy' is used as the loss function, suitable for binary classification tasks.
+- The model is trained using the Adam optimizer and evaluated for accuracy.
+
+🎓 Viva Questions
+Q1: Why use the sigmoid function in logistic regression?
+🅰️ It squashes the output between 0 and 1, making it interpretable as a probability for binary classification.
+
+Q2: What is binary cross-entropy loss?
+🅰️ It measures the difference between the predicted probability and the actual label for binary classification tasks.
+
+Q3: Why only 1 neuron in the output layer?
+🅰️ Because we're doing binary classification; one output neuron with sigmoid gives the probability of class 1.
+
+Q4: What happens if we use 'relu' instead of 'sigmoid'?
+🅰️ The output won't be bounded between 0 and 1, so it can't represent a probability.
+
+Q5: Can this model do multi-class classification?
+🅰️ Not in the current form. For multi-class tasks, use softmax activation and categorical_crossentropy loss with multiple neurons in the output layer.
+
+
+
+
+"""
+
