@@ -37,3 +37,42 @@ plt.legend()
 plt.axhline(0, color='black', linewidth=0.5)
 plt.axvline(0, color='black', linewidth=0.5)
 plt.show()
+
+
+
+
+1. What is an Artificial Neural Network (ANN)?
+Answer:
+An Artificial Neural Network (ANN) is a computing system inspired by the biological neural networks of animal brains. It consists of interconnected nodes (neurons) organized in layers — input layer, hidden layer(s), and output layer. Each connection has a weight, and the network learns patterns by adjusting these weights.
+Counter-questions:
+•	What are the types of neural networks?
+•	Why are neural networks called "artificial"?
+________________________________________
+2. What is Bias in a Neural Network?
+Answer:
+Bias is an extra parameter in the neuron model that allows the model to shift the activation function curve left or right. It helps the model to better fit the data, even when input features are zero.
+Counter-questions:
+•	How is bias different from weights?
+•	What happens if there is no bias?
+________________________________________
+3. Can you explain the structure of a simple neuron model, the Perceptron?
+Answer:
+A perceptron is the simplest neural network. It takes multiple input signals, applies individual weights, sums them up, adds a bias, and passes the result through an activation function (usually step function) to produce output.
+Counter-questions:
+•	What activation function is used in a perceptron?
+•	Why is bias important in a perceptron?
+________________________________________
+4. What are Activation Functions, and why are they important?
+Answer:
+Activation functions introduce non-linearity into the network. Without activation functions, a neural network would behave like a linear regression model. They help the network learn complex patterns like images, languages, etc.
+Counter-questions:
+•	Name a few activation functions. relu 0to infi,sigmo 0 - 1,tanh -1 1,softm 0 1
+•	What happens if no activation function is used?
+________________________________________
+5. What is the difference between Activation Function and Threshold Function?
+Answer:
+•	Activation Function: Any function (like ReLU, Sigmoid) that decides output value.
+•	Threshold Function: A specific type of activation function that outputs binary results (0 or 1) based on whether the input crosses a threshold.
+Counter-questions:
+•	Give examples of threshold functions.
+•	Can a threshold function be non-linear?
