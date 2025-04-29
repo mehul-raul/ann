@@ -1,33 +1,88 @@
 import numpy as np
 
 # -------------------- TRAINING DATA --------------------
-# Two pairs of binary vectors (bipolar representation: 1, -1)
-X = np.array([[1, -1, 1], [-1, 1, -1]])  # Input vectors
-Y = np.array([[1, -1], [-1, 1]])        # Associated output vectors
+# Input and output pairs in bipolar representation (-1 and 1)
+X = np.array([
+    [1, -1, 1],    # Input pattern 1
+    [-1, 1, -1]    # Input pattern 2
+])
+
+Y = np.array([
+    [1, -1],       # Output pattern 1 (associated with input 1)
+    [-1, 1]        # Output pattern 2 (associated with input 2)
+])
 
 # -------------------- TRAINING PHASE --------------------
-# Weight matrix (BAM rule: W = X^T * Y)
+# BAM weight matrix: W = X^T * Y
 W = np.dot(X.T, Y)
 
 # -------------------- TESTING PHASE --------------------
-def recall_bam(x):
-    y = np.sign(np.dot(x, W))     # Forward
-    x_recall = np.sign(np.dot(y, W.T))  # Backward
-    return x_recall, y
+def recall_bam(x_input):
+    # Forward pass: input → output
+    y_output = np.sign(np.dot(x_input, W))
 
-# Test recall
-for i in range(len(X)):
-    xr, yr = recall_bam(X[i])
-    print(f"\nInput: {X[i]}")
-    print(f"Recalled Y: {yr}")
-    print(f"Recalled X: {xr}")
+    # Backward pass: output → input (recall)
+    x_recall = np.sign(np.dot(y_output, W.T))
+
+    return y_output, x_recall
+
+# Test recall for all training inputs
+print("===== BAM Recall =====")
+for i, x in enumerate(X):
+    y_recalled, x_recalled = recall_bam(x)
+    print(f"\nOriginal X[{i}]: {x}")
+    print(f"Recalled Y:      {y_recalled}")
+    print(f"Recalled X:      {x_recalled}")
+
+# -------------------- WORKING EXPLANATION --------------------
+
+"""
+WORKING OF BAM:
+
+1. Data:
+   - Two associated pairs: (X1, Y1), (X2, Y2)
+   - X = [[1, -1, 1], [-1, 1, -1]]
+   - Y = [[1, -1], [-1, 1]]
+   - Both X and Y are in bipolar form (-1, 1)
+
+2. Training:
+   - Weight matrix W is computed using: W = X^T × Y
+   - This stores associations between X and Y in both directions.
+
+3. Recall:
+   - Given an input X, calculate Y using dot product with W: Y = sign(XW)
+   - Then recall X back from Y: X = sign(YW^T)
+   - The sign function ensures outputs stay in bipolar form.
+
+4. Example:
+   - For input X = [1, -1, 1]
+     → forward pass → Y = [1, -1]
+     → backward pass → X = [1, -1, 1] (original X restored)
+
+Note: The BAM model is bidirectional: you can recall Y from X, or X from Y.
+"""
 
 # -------------------- VIVA QUESTIONS --------------------
-# Q1: What is BAM?
-# A1: BAM is a hetero-associative memory that stores pairs of patterns and allows bidirectional recall.
 
-# Q2: What is bipolar representation?
-# A2: A binary format using -1 and 1 instead of 0 and 1.
+"""
+VIVA QUESTIONS:
 
-# Q3: What is the weight update rule for BAM?
-# A3: W = X^T * Y, where X and Y are bipolar vectors.
+1. Q: What is BAM?
+   A: BAM (Bidirectional Associative Memory) is a type of neural network that stores input-output pairs and can recall in both directions.
+
+2. Q: What is bipolar representation?
+   A: Bipolar representation uses -1 and +1 instead of binary 0 and 1. It is preferred in BAM for mathematical convenience.
+
+3. Q: How is the weight matrix calculated in BAM?
+   A: Using the rule: W = X^T × Y, where X and Y are matrices of bipolar vectors.
+
+4. Q: What is the purpose of the sign function in BAM?
+   A: The sign function ensures the output stays in bipolar form after matrix multiplication.
+
+5. Q: Can BAM recall from noisy or partial patterns?
+   A: Yes, BAM can often recall correct outputs from incomplete or slightly noisy inputs due to its associative nature.
+
+6. Q: Is BAM unidirectional or bidirectional?
+   A: Bidirectional. You can recall Y from X or X from Y.
+"""
+
