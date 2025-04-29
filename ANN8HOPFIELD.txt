@@ -1,31 +1,90 @@
 import numpy as np
 
-# 4 bipolar patterns (5 bits each)
+# -------------------- TRAINING DATA --------------------
+# 4 bipolar patterns (5 bits each) to be stored
 patterns = np.array([
-    [1, -1, 1, -1, 1],
-    [-1, 1, -1, 1, -1],
-    [1, 1, -1, -1, 1],
-    [-1, -1, 1, 1, -1]
+    [ 1, -1,  1, -1,  1],   # Pattern 1
+    [-1,  1, -1,  1, -1],   # Pattern 2
+    [ 1,  1, -1, -1,  1],   # Pattern 3
+    [-1, -1,  1,  1, -1]    # Pattern 4
 ])
 
-# Weight matrix using Hebbian learning
-n = patterns.shape[1]
-W = np.zeros((n, n))
+# -------------------- WEIGHT MATRIX (Hebbian Learning) --------------------
+n = patterns.shape[1]  # Number of neurons
+W = np.zeros((n, n))   # Initialize weight matrix
+
+# Hebbian learning: W += outer product of each pattern with itself
 for p in patterns:
     W += np.outer(p, p)
-np.fill_diagonal(W, 0)  # No self-connections
 
-# Recall function
+# No self-connections: set diagonal to 0
+np.fill_diagonal(W, 0)
+
+# -------------------- RECALL FUNCTION --------------------
 def recall(x, steps=5):
     for _ in range(steps):
-        x = np.sign(np.dot(W, x))
+        x = np.sign(np.dot(W, x))  # Update all neurons synchronously
     return x
 
-# Test recall of a noisy pattern
-test = np.array([1, -1, 1, -1, -1])
+# -------------------- TESTING WITH NOISY INPUT --------------------
+test = np.array([1, -1, 1, -1, -1])  # Slightly noisy version of Pattern 1
 output = recall(test)
-print(f"Noisy input:  {test}")
+
+# -------------------- OUTPUT --------------------
+print("===== Hopfield Network Recall =====")
+print(f"Noisy Input:  {test}")
 print(f"Recalled:     {output}")
 
-# Q: What is a Hopfield network?
-# A: A recurrent network that stores patterns as energy minima and recalls them from noisy inputs.
+# -------------------- WORKING EXPLANATION --------------------
+"""
+HOW THIS WORKS:
+
+1. PATTERNS:
+   - 4 known 5-bit bipolar patterns (-1, +1) are stored in memory.
+
+2. TRAINING:
+   - The weights are learned using Hebb’s rule:
+     W = Σ (p × pᵀ), for all patterns p
+   - This creates a symmetric matrix that encodes memory associations.
+   - Diagonal elements (self-connections) are set to 0.
+
+3. RECALL:
+   - A noisy pattern is given as input.
+   - At each step, the network updates all neurons using:
+     x = sign(Wx)
+   - This process converges toward a stored pattern that is closest in energy.
+
+4. OUTPUT:
+   - The network successfully denoises the input and recalls the correct pattern.
+
+NOTE:
+   - Hopfield networks work like an energy-based memory system.
+   - They are capable of auto-associative recall: noisy → clean.
+"""
+
+# -------------------- VIVA QUESTIONS --------------------
+"""
+VIVA QUESTIONS:
+
+1. Q: What is a Hopfield network?
+   A: A Hopfield network is a recurrent neural network that stores binary/bipolar patterns and can recall them from noisy or incomplete inputs.
+
+2. Q: What is Hebbian learning?
+   A: Hebbian learning is based on the principle "neurons that fire together, wire together." In Hopfield networks, it's implemented as: W = Σ(p × pᵀ)
+
+3. Q: Why do we set the diagonal of the weight matrix to zero?
+   A: To avoid self-connections, which can interfere with the recall process.
+
+4. Q: What kind of recall does a Hopfield network perform?
+   A: Auto-associative recall — it retrieves the same pattern from a noisy version of it.
+
+5. Q: What is the role of the sign function?
+   A: It ensures the neuron outputs remain in bipolar form (-1 or +1).
+
+6. Q: What does synchronous updating mean?
+   A: All neurons are updated at the same time in each recall step.
+
+7. Q: Can a Hopfield network store any number of patterns?
+   A: No. It has a capacity limit of about 0.15 * N, where N is the number of neurons.
+"""
+
