@@ -94,6 +94,8 @@ Counter-Questions that can be asked:
 •	Why can't McCulloch-Pitts solve XOR?
 •	What is a threshold function?
 ________________________________________
+@CNN- type of nn that efficien learn patt in image data,lyr 1-convo lyr-applies filters to image they detect features each filter slides over img and this sliding is call convolution,lyr2- activa - relu used, lyr3-max poolin- reduces size (width height ) of featurmaps produ by filters,feature map is basicall array that store features of img,flattenin - is converting multi dimen array to one linear array or vector
+---------------------------------------------------------------------
 📚 Q12. What is Delta Learning Rule?
 Answer:
 The Delta Learning Rule is a supervised learning method where the weights are updated based on the difference between the expected (target) output and the actual output.
