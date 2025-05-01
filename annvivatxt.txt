@@ -19,6 +19,95 @@ Counter-questions:
 •	What activation function is used in a perceptron?
 •	Why is bias important in a perceptron?
 ________________________________________
+Hopfield Network
+A type of recurrent neural network (RNN).
+
+Used for associative memory — stores patterns and retrieves the closest match.
+
+All neurons are connected to each other (no self-loops).
+
+It is a feedback network (outputs are fed back as inputs).
+
+Works by minimizing an energy function until it reaches a stable state.
+
+Can be used for pattern recognition and error correction.
+
+🧠 Think of it like a memory system: you give a noisy image, and it tries to recall the clean version.
+
+🔹 Boltzmann Machine
+A stochastic (probabilistic) recurrent neural network.
+
+Each neuron can be in on or off state randomly based on a probability.
+
+Used to learn complex distributions over data.
+
+Restricted Boltzmann Machine (RBM): a simplified version where neurons are split into two layers (visible and hidden) and connections are only between them.
+
+Used in deep belief networks and feature learning.
+
+🔹 Kohonen Network / Self-Organizing Maps (SOM)
+A type of unsupervised learning network.
+
+Used for dimensionality reduction and visualization.
+
+Maps high-dimensional data into 2D or 3D space, preserving the topological properties.
+
+Useful for clustering and pattern discovery.
+
+Would you like me to take your viva on these unusual topics now (Hopfield, RBM, SOM, etc.) so you feel ready if they come up?
+
+
+
+
+
+
+
+You said:
+MORE THINGS AND ALSO WHAT ARE RNNS
+
+
+ChatGPT said:
+Absolutely! Let’s first answer your direct question, then cover more less-common ANN concepts that might come up in viva.
+
+✅ What are RNNs (Recurrent Neural Networks)?
+🔹 Definition:
+RNNs are neural networks designed to handle sequential data, like text, speech, time-series data, etc.
+
+🔹 Key Feature:
+They have loops (feedback connections) that allow information to persist — meaning they have a kind of memory of previous inputs.
+
+🔹 How They Work:
+At each time step, the output depends not only on the current input but also on the previous hidden state.
+
+This makes them useful for tasks like language modeling, speech recognition, or stock prediction.
+
+🔹 Limitation:
+Suffer from vanishing gradient issues over long sequences.
+
+To fix this, we use LSTM (Long Short-Term Memory) and GRU (Gated Recurrent Units).
+
+✅ Extra/Advanced Topics You Might Be Asked About in Vivas
+Here’s a quick summary of more important but less-common ANN models/concepts:
+
+🔹 1. LSTM (Long Short-Term Memory)
+A special kind of RNN.
+
+Handles long-term dependencies using memory cells and gates (input, forget, output).
+
+Used in language translation, chatbots, video analysis, etc.
+
+🔹 2. GRU (Gated Recurrent Unit)
+Similar to LSTM but with fewer gates.
+
+Lighter and faster, often gives similar performance.
+
+Easier to train.
+
+🔹 3. Autoencoders
+Unsupervised networks that learn to compress input into a smaller representation (encoding), then reconstruct it.
+
+Used for dimensionality reduction, denoising, image compression.
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 4. What are Activation Functions, and why are they important?
 Answer:
 Activation functions introduce non-linearity into the network. Without activation functions, a neural network would behave like a linear regression model. They help the network learn complex patterns like images, languages, etc.
